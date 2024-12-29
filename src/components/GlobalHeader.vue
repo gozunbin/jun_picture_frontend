@@ -16,7 +16,7 @@
           :items="items"
           @click="doMenuClick"
         />
-<!--        {{ JSON.stringify(loginUserStore.loginUser) }}-->
+      <!-- {{ JSON.stringify(loginUserStore.loginUser) }}-->
       </a-col>
       <a-col flex="120px">
         <div class="user-login-status">
@@ -40,9 +40,9 @@
             <a-button type="primary" href="/user/login">登录</a-button>
           </div>
         </div>
-
       </a-col>
     </a-row>
+
   </div>
 </template>
 
@@ -65,10 +65,21 @@ const originItems = [
     title: '主页',
   },
   {
-    key: '/user/userManage',
+    key: '/add_picture',
+    label: '创建图片',
+    title: '创建图片',
+  },
+  {
+    key: '/admin/userManage',
     label: '用户管理',
     title: '用户管理',
   },
+  {
+    key: '/admin/pictureManage',
+    label: '图片管理',
+    title: '图片管理',
+  },
+
   {
     key: 'others',
     label: h('a', { href: 'https://www.codefather.cn', target: '_blank' }, '编程导航'),
@@ -77,7 +88,7 @@ const originItems = [
 ]
 
 // 过滤菜单项
-// todo 没有权限不展示用户管理
+// 以/admin开头，是管理员的才能访问
 const filterMenus = (menus = [] as MenuProps['items']) => {
   return menus?.filter((menu)=>{
     if (menu.key.startsWith('/admin')) {
