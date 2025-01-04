@@ -1,5 +1,5 @@
 <template>
-  <div id="userManagePage">
+  <div id="pictureManagePage">
     <a-flex justify="space-between">
       <h2>图片管理</h2>
       <a-space>
@@ -104,13 +104,8 @@
               v-if="record.reviewStatus !== PIC_REVIEW_STATUS_ENUM.REJECT"
               type="link"
               danger
-              @click="handleReview(record, PIC_REVIEW_STATUS_ENUM.REJECT)"
-            >
-              拒绝
-            </a-button>
-            <a-button type="link" :href="`/add_picture?id=${record.id}`" target="_blank"
-              >编辑
-            </a-button>
+              @click="handleReview(record, PIC_REVIEW_STATUS_ENUM.REJECT)">拒绝</a-button>
+            <a-button type="link" :href="`/add_picture?id=${record.id}`" target="_blank">编辑</a-button>
             <a-button type="link" danger @click="doDelete(record.id)">删除</a-button>
           </a-space>
         </template>
@@ -211,6 +206,7 @@ const pagination = computed(() => {
 const fetchData = async () => {
   const res = await listPictureByPageUsingPost({
     ...searchParams,
+    nullSpaceId: true,
   })
   if (res.data.data) {
     dataList.value = res.data.data.records ?? []

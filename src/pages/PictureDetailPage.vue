@@ -195,8 +195,5 @@ const doDownload = () => {
 </script>
 
 <style scoped>
-#homePage .search-bar {
-  max-width: 480px;
-  margin: 0 auto 16px;
-}
+
 </style>
