@@ -1,7 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
 import request from '@/request'
-import type {LocationQueryValue} from "vue-router";
 
 /** addSpace POST /api/space/add */
 export async function addSpaceUsingPost(
@@ -66,8 +65,8 @@ export async function getSpaceByIdUsingGet(
 /** getSpaceVOById GET /api/space/get/vo */
 export async function getSpaceVoByIdUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: { id: string | LocationQueryValue[] },
-  options?: { [p: string]: any },
+  params: API.getSpaceVOByIdUsingGETParams,
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseSpaceVO_>('/api/space/get/vo', {
     method: 'GET',
