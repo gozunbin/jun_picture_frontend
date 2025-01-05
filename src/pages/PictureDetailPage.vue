@@ -71,6 +71,12 @@
                 <DownloadOutlined />
               </template>
             </a-button>
+            <a-button type="primary" ghost @click="doShare">
+              分享
+              <template #icon>
+                <share-alt-outlined />
+              </template>
+            </a-button>
             <a-button v-if="canEdit" type="default" @click="doEdit">
               编辑
               <template #icon>
@@ -88,7 +94,7 @@
         </a-card>
       </a-col>
     </a-row>
-
+    <ShareModal ref="shareModalRef" :link="shareLink" />
   </div>
 </template>
 
@@ -100,6 +106,7 @@ import { message } from 'ant-design-vue'
 import {downloadImage, formatSize, toHexColor} from "../utils";
 import {useLoginUserStore} from "@/stores/useLoginUserStore";
 import router from "@/router";
+import ShareModal from "@/components/ShareModal.vue";
 
 const props = defineProps<{
   id: string | number
@@ -204,6 +211,19 @@ const doDownload = () => {
   downloadImage(picture.value.url)
 }
 
+
+// 分享弹窗引用
+const shareModalRef = ref()
+// 分享链接
+const shareLink = ref<string>()
+
+// 分享
+const doShare = () => {
+  shareLink.value = `${window.location.protocol}//${window.location.host}/picture/${picture.value.id}`
+  if (shareModalRef.value) {
+    shareModalRef.value.openModal()
+  }
+}
 
 
 </script>
