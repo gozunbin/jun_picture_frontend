@@ -30,10 +30,6 @@ interface Props {
 }
 
 
-
-
-
-
 const props = defineProps<Props>()
 const params = props.picture ? { id: props.picture.id } : {}
 
