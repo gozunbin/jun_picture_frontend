@@ -38,6 +38,7 @@
         :imageUrl="picture?.url"
         :picture="picture"
         :spaceId="spaceId"
+        :space="space"
         :onSuccess="onCropSuccess"
       />
     </div>
@@ -78,19 +79,20 @@
       </a-form-item>
     </a-form>
   </div>
-  <ImageCropper
-    ref="imageCropperRef"
-    :imageUrl="picture?.url"
-    :picture="picture"
-    :spaceId="spaceId"
-    :onSuccess="onSuccess"
-  />
+<!--  <ImageCropper-->
+<!--    ref="imageCropperRef"-->
+<!--    :imageUrl="picture?.url"-->
+<!--    :picture="picture"-->
+<!--    :spaceId="spaceId"-->
+<!--    :space="space"-->
+<!--    :onSuccess="onSuccess"-->
+<!--  />-->
 </template>
 
 <script lang="ts" setup>
 import PictureUpload from '@/components/PictureUpload.vue'
 import UrlPictureUpload from '@/components/UrlPictureUpload.vue'
-import { computed, h, onMounted, reactive, ref } from 'vue'
+import {computed, h, onMounted, reactive, ref, watchEffect} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   editPictureUsingPost,
@@ -101,6 +103,7 @@ import { message } from 'ant-design-vue'
 import ImageCropper from '@/components/ImageCropper.vue'
 import { EditOutlined, FullscreenOutlined } from '@ant-design/icons-vue'
 import ImageOutPainting from "@/components/ImageOutPainting.vue";
+import {getSpaceVoByIdUsingGet} from "@/api/spaceController";
 
 const picture = ref<API.PictureVO>()
 const pictureForm = reactive<API.PictureEditRequest>({})
@@ -110,6 +113,29 @@ const uploadType = ref<'file' | 'url'>('file')
 // 空间 id
 const spaceId = computed(() => {
   return route.query?.spaceId
+})
+
+const space = ref<API.SpaceVO>()
+console.error('space in parent:', space);
+
+// 获取空间信息
+const fetchSpace = async () => {
+  // 获取数据
+  if (spaceId.value) {
+    const res = await getSpaceVoByIdUsingGet({
+      id: spaceId.value,
+    })
+    console.error('Backend response:', res);
+    if (res.data.code === 0 && res.data.data) {
+      space.value = res.data.data;
+    } else {
+      console.error('No space data received from backend');
+    }
+  }
+}
+
+watchEffect(() => {
+  fetchSpace()
 })
 
 /**
@@ -224,6 +250,8 @@ const doImagePainting = () => {
 const onImageOutPaintingSuccess = (newPicture: API.PictureVO) => {
   picture.value = newPicture
 }
+
+
 
 </script>
 
